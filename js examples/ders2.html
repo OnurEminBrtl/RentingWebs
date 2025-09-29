@@ -1,0 +1,17 @@
+<div>
+    <label>
+        İsim : <input maxlength="20" type="text" id="yazim" oninput="yazi_kontrol(this)" />
+    </label>
+</div>
+<script>
+    function yazi_kontrol(elm) {
+        if (elm.value === "otobüsçü" || (isNumeric(elm.value) && parseInt(elm.value) >= 77 && parseInt(elm.value) <= 88)) {
+            elm.style.color = 'green';
+        } else {
+            elm.style.color = 'red';
+        }
+    }
+    function isNumeric(value) {
+        return (/^-?\d+$/);
+    }
+</script>

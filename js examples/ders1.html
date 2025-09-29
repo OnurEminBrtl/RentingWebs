@@ -1,0 +1,197 @@
+<style>
+    /* Butonların başlangıç stillerini buraya ekleyebilirsiniz */
+    .buttons{
+        /* Butonların genişliğini ve yatay konumunu burada belirleyebilirsiniz */
+        width: 150px;
+        margin: 10px;
+        /* Butonların arkaplan rengini burada belirleyebilirsiniz */
+        background-color: #333;
+        /* Butonların arka plan rengini burada belirleyebilirsiniz */
+        color: #fff;
+        /* Butonların border rengini burada belirleyebilirsiniz */
+        border: none;
+        /* Butonların hover durumunda arka plan rengini burada belirleyebilirsiniz */
+        background-color: #555;
+        /* Butonların hover durumunda arka plan rengini burada belirleyebilirsiniz */
+        color: #fff;
+        /* Butonların border rengini bur/*/
+        transition: all 0.2s ease; /* Yumuşak geçişler için */
+    }
+    .buttons > button{
+        width: 100%;
+    }
+</style>
+
+<div class="buttons">
+    <button onclick="clickle('renk_btn')" id="renk_btn">Tıkla Bana</button>
+    <button onclick="clickle('renk_btn_Bana1')" id="renk_btn_Bana1">Tıkla Bana1</button>
+    <button onclick="clickle('renk_btn_Bana2')" id="renk_btn_Bana2">Tıkla Bana2</button>
+    <button onclick="clickle('renk_btn_Bana3')" id="renk_btn_Bana3">Tıkla Bana3</button>
+    <button onclick="clickle('renk_btn_Bana4')" id="renk_btn_Bana4">Tıkla Bana4</button>
+    <button onclick="clickle('renk_btn_Bana5')" id="renk_btn_Bana5">Tıkla Bana5</button>
+    <button onclick="clickle('renk_btn_Bana6')" id="renk_btn_Bana6">Tıkla Bana6</button>
+    <button onclick="clickle('renk_btn_Bana7')" id="renk_btn_Bana7">Tıkla Bana7</button>
+    <button onclick="clickle('renk_btn_Bana8')" id="renk_btn_Bana8">Tıkla Bana8</button>
+    <button onclick="clickle('renk_btn_Bana9')" id="renk_btn_Bana9">Tıkla Bana9</button>
+    <button onclick="clickle('renk_btn_Bana11')" id="renk_btn_Bana11">Tıkla Bana11</button>
+    <button onclick="clickle('renk_btn_Bana22')" id="renk_btn_Bana22">Tıkla Bana22</button>
+    <button onclick="clickle('renk_btn_Bana33')" id="renk_btn_Bana33">Tıkla Bana33</button>
+    <button onclick="clickle('renk_btn_Bana44')" id="renk_btn_Bana44">Tıkla Bana44</button>
+    <button onclick="clickle('renk_btn_Bana55')" id="renk_btn_Bana55">Tıkla Bana55</button>
+    <button onclick="clickle('renk_btn_Bana66')" id="renk_btn_Bana66">Tıkla Bana66</button>
+    <button onclick="clickle('renk_btn_Bana77')" id="renk_btn_Bana77">Tıkla Bana77</button>
+    <button onclick="clickle('renk_btn_Bana88')" id="renk_btn_Bana88">Tıkla Bana88</button>
+    <button onclick="clickle('renk_btn_Bana99')" id="renk_btn_Bana99">Tıkla Bana99</button>
+    <button onclick="clickle('renk_btn_Bana12')" id="renk_btn_Bana12">Tıkla Bana12</button>
+    <button onclick="clickle('renk_btn_Bana13')" id="renk_btn_Bana13">Tıkla Bana13</button>
+    <button onclick="clickle('renk_btn_Bana14')" id="renk_btn_Bana14">Tıkla Bana14</button>
+</div>
+
+<script>
+    var clickCount = {};
+
+    function clickle(btn_id) {
+        /* tıklamayı takip etmek için counter ekledim*/
+        if (!clickCount[btn_id]) {
+            clickCount[btn_id] = 0;
+        }
+        clickCount[btn_id]++;  
+        /* buton kimliği seçmek için*/
+        var btn = document.getElementById(btn_id);
+        /* butonların işlevlerini yapmaya başladık*/
+        if (btn_id == 'renk_btn') {
+            if (clickCount[btn_id] % 2 == 1) {
+                btn.style.backgroundColor = 'red';
+            } else {
+                btn.style.backgroundColor = '';
+            }
+        } else if (btn_id == 'renk_btn_Bana1') {
+            if (clickCount[btn_id] % 2 == 1) {
+                btn.style.color = 'blue';
+            } else {
+                btn.style.color = '';
+            }
+        } else if (btn_id == 'renk_btn_Bana2') {
+            if (clickCount[btn_id] % 2 == 1) {
+                btn.style.backgroundColor = 'green';
+            } else {
+                btn.style.backgroundColor = '';
+            }
+        } else if (btn_id == 'renk_btn_Bana3') {
+            if (clickCount[btn_id] % 2 == 1) {
+                btn.style.backgroundColor = 'yellow';
+            } else {
+                btn.style.backgroundColor = '';
+            }
+        } else if (btn_id == 'renk_btn_Bana4') {
+            if (clickCount[btn_id] % 1 == 0) {
+                alert('Buton 4\'e tıkladınız!');
+            }
+        } else if (btn_id == 'renk_btn_Bana5') {
+            if (clickCount[btn_id] % 2 == 1) {
+                btn.innerText = 'Tıklandı!';
+            } else {
+                btn.innerText = 'Tıkla Bana5';
+            }
+        } else if (btn_id == 'renk_btn_Bana6') {
+            if (clickCount[btn_id] % 2 == 1) {
+                btn.style.display = 'none';
+            } else {
+                btn.style.display = 'block';
+            }
+        } else if (btn_id == 'renk_btn_Bana7') {
+            if (clickCount[btn_id] % 2 == 1) {
+                btn.style.fontSize = '20px';
+                document.getElementById('renk_btn_Bana6').style.display = 'block';
+            } else {
+                btn.style.fontSize = '';
+                document.getElementById('renk_btn_Bana6').style.display = 'none';
+            }
+        } else if (btn_id == 'renk_btn_Bana8') {
+            if (clickCount[btn_id] % 2 == 1) {
+                btn.style.border = '2px solid black';
+            } else {
+                btn.style.border = '';
+            }
+        } else if (btn_id == 'renk_btn_Bana9') {
+            if (clickCount[btn_id] % 2 == 1) {
+                document.body.style.backgroundColor = 'lightgrey';
+            } else {
+                document.body.style.backgroundColor = '';
+            }
+        } else if (btn_id == 'renk_btn_Bana11') {
+            if (clickCount[btn_id] % 2 == 1) {
+                btn.style.color = 'white';
+            } else {
+                btn.style.color = '';
+            }
+        } else if (btn_id == 'renk_btn_Bana22') {
+            if (clickCount[btn_id] % 2 == 1) {
+                btn.style.padding = '20px';
+            } else {
+                btn.style.padding = '';
+            }
+        } else if (btn_id == 'renk_btn_Bana33') {
+            if (clickCount[btn_id] % 2 == 1) {
+                btn.style.margin = '40px';
+            } else {
+                btn.style.margin = '';
+            }
+        } else if (btn_id == 'renk_btn_Bana44') {
+            if (clickCount[btn_id] % 2 == 1) {
+                btn.style.width = '200px';
+            } else {
+                btn.style.width = '';
+            }
+        } else if (btn_id == 'renk_btn_Bana55') {
+            if (clickCount[btn_id] % 2 == 1) {
+                btn.style.height = '80px';
+            } else {
+                btn.style.height = '';
+            }
+        } else if (btn_id == 'renk_btn_Bana66') {
+            if (clickCount[btn_id] % 2 == 1) {
+                btn.style.fontWeight = 'bold';
+            } else {
+                btn.style.fontWeight = '';
+            }
+        } else if (btn_id == 'renk_btn_Bana77') {
+            if (clickCount[btn_id] % 2 == 1) {
+                btn.style.textAlign = 'center', btn.style.fontSize = ' 10px';
+            } else {
+                btn.style.textAlign = '';
+                btn.style.fontSize = ''
+            }
+        } else if (btn_id == 'renk_btn_Bana88') {
+            if (clickCount[btn_id] % 2 == 1) {
+                btn.style.textDecoration = 'underline';
+            } else {
+                btn.style.textDecoration = '';
+            }
+        } else if (btn_id == 'renk_btn_Bana99') {
+            if (clickCount[btn_id] % 2 == 1) {
+                btn.style.opacity = '0.5';
+            } else {
+                btn.style.opacity = '';
+            }
+        } else if (btn_id == 'renk_btn_Bana12') {
+            if (clickCount[btn_id] % 2 == 1) {
+                btn.style.transform = 'rotate(45deg)';
+            } else {
+                btn.style.transform = '';
+            }
+        } else if (btn_id == 'renk_btn_Bana13') {
+            if (clickCount[btn_id] % 2 == 1) {
+                btn.style.boxShadow = '5px 5px 10px grey';
+            } else {
+                btn.style.boxShadow = '';
+            }
+        } else if (btn_id == 'renk_btn_Bana14') {
+            if (clickCount[btn_id] % 2 == 1) {
+                btn.style.cursor = 'pointer';
+            } else {
+                btn.style.cursor = '';
+            }
+        }
+    }
+</script>
