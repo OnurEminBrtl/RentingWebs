@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ürünler</title>
+    <style>
+        /* Basit bir stil tanımı */
+        .product {
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+        }
+
+        .filter-section {
+            margin-bottom: 20px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+    </style>
+</head>
+<body>
+    <h1>Ürünler</h1>
+
+    <div class="filter-section">
+        <h2>Filtreler</h2>
+        <label>
+            <input type="checkbox" id="hasWideImage"> Geniş Görsel (modgenisgorsel)
+        </label>
+        <br>
+        <label>
+            <input type="checkbox" id="moreThanThreeTexts"> 4'ten Fazla Metin
+        </label>
+        <br>
+        <label>
+            <input type="checkbox" id="equalNameAndLogoCount"> İsim ve Logo Sayısı Eşit
+        </label>
+        <br>
+        <label>
+            <input type="checkbox" id="gorsel8"> göresl8içeiriyo mu
+        </label>
+        <br>
+        <button id="applyFilters">Uygula</button>
+    </div>
+
+    <div id="product-list"></div>
+
+    <script src="objectdeneme.js"></script>
+    <script>
+        // Filtre uygulamak için fonksiyon
+        function applyFilters() {
+            const hasWideImage = document.getElementById('hasWideImage').checked;
+            const moreThanThreeTexts = document.getElementById('moreThanThreeTexts').checked;
+            const equalNameAndLogoCount = document.getElementById('equalNameAndLogoCount').checked;
+            const gorsel8 = document.getElementById('gorsel8').checked;
+
+            // Filtrelenmiş ürünleri tutan dizi
+            const filteredProducts = staticData.filter(product => {
+                // Her bir filtre için koşulları kontrol ediyoruz
+                if (hasWideImage && !product.meshes.gorsel.includes('modgenisgorsel')) {
+                    return false; // Geniş görsel filtresi uygulanmışsa ve ürün geniş görsel içermiyorsa, geçmez
+                }
+
+                if (moreThanThreeTexts && product.meshes.text.length <= 4) {
+                    return false; // 3'ten fazla metin filtresi uygulanmışsa ve ürünün metin sayısı 3 veya daha azsa, geçmez
+                }
+
+                if (equalNameAndLogoCount && product.name != product.meshes.logo.length) {
+                    return false; // İsim ve logo sayısı eşit değilse, geçmez
+                }
+                if (gorsel8 && !product.meshes.gorsel.includes('moddikgorsel8')) {
+                    return false; // Geniş görsel filtresi uygulanmışsa ve ürün geniş görsel içermiyorsa, geçmez
+                }
+
+                return true; // Tüm filtreler sağlanıyorsa ürün kabul edilir
+            });
+
+            // Filtrelenmiş ürünleri göstermek için
+            displayProducts(filteredProducts);
+        }
+
+        // Ürünleri ekranda gösterme fonksiyonu
+        function displayProducts(products) {
+            const productList = document.getElementById('product-list');
+            productList.innerHTML = ''; // Önceki ürünleri temizliyoruz
+
+            products.forEach(product => {
+                // Her ürün için bir div oluşturuyoruz.
+                const productDiv = document.createElement('div');
+                productDiv.classList.add('product');
+
+                // Ürün detaylarını ekliyoruz.
+                productDiv.innerHTML = `
+                    <h2>Stant: ${product.name}</h2>
+                    <p><strong>Dosya:</strong> ${product.gltf.file}</p>
+                    <p><strong>Logolar:</strong> ${product.meshes.logo.join(', ')}</p>
+                    <p><strong>Görseller:</strong> ${product.meshes.gorsel.join(', ')}</p>
+                    <p><strong>Metinler:</strong> ${product.meshes.text.join(', ')}</p>
+                    <p><strong>Videolar:</strong> ${product.meshes.video.join(', ')}</p>
+                    <p><strong>Logo Crop:</strong> ${product.meshes.logoCrop.join(', ')}</p>
+                    <p><strong>Görsel Crop:</strong> ${product.meshes.gorselCrop.join(', ')}</p>
+                    <p><strong>Dik Görsel Crop:</strong> ${product.meshes.dikGorselCrop.join(', ')}</p>
+                    <p><strong>Geniş Görsel Crop:</strong> ${product.meshes.genisGorselCrop.join(', ')}</p>
+                `;
+
+                // Ürünü listeye ekliyoruz.
+                productList.appendChild(productDiv);
+            });
+        }
+
+        // Filtre uygulama butonuna tıklama etkinliği ekleme
+        document.getElementById('applyFilters').addEventListener('click', applyFilters);
+
+        // Sayfa yüklendiğinde tüm ürünleri gösteriyoruz
+        displayProducts(staticData);
+    </script>
+</body>
+</html>

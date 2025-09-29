@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Evler</title>
+    <style>
+        /* Mevcut CSS stilleri */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            color: #333;
+        }
+
+        h1 {
+            text-align: center;
+            color: #007bff;
+            margin-top: 20px;
+            font-size: 2rem;
+        }
+
+        .filters,
+        .add-property {
+            max-width: 600px;
+            margin: 20px auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .filters label,
+        .add-property label {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .filters select,
+        .add-property input,
+        .add-property select,
+        .add-property button {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        .filters button,
+        .add-property button {
+            background-color: #28a745;
+            color: white;
+            cursor: pointer;
+            font-size: 16px;
+            border: none;
+            border-radius: 4px;
+            transition: background-color 0.3s ease;
+        }
+
+        .filters button:hover,
+        .add-property button:hover {
+            background-color: #218838;
+        }
+
+        .property {
+            max-width: 600px;
+            margin: 20px auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .property h2 {
+            font-size: 1.5rem;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .property p {
+            margin: 10px 0;
+            color: #666;
+            font-size: 1rem;
+        }
+
+        .property button {
+            padding: 10px 15px;
+            border: none;
+            background-color: #007bff;
+            color: white;
+            cursor: pointer;
+            font-size: 14px;
+            border-radius: 4px;
+            margin-right: 10px;
+            transition: background-color 0.3s ease;
+        }
+
+        .property button:hover {
+            background-color: #0056b3;
+        }
+
+        .property button.delete {
+            background-color: #dc3545;
+        }
+
+        .property button.delete:hover {
+            background-color: #c82333;
+        }
+
+        /* Modal stilleri */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgb(0, 0, 0);
+            background-color: rgba(0, 0, 0, 0.4);
+            padding-top: 60px;
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 5% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 500px;
+            border-radius: 8px;
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .add-property {
+            max-width: 600px;
+            margin: 20px auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .add-property h3 {
+            font-size: 1.5rem;
+            color: #333;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .add-property input[type="text"],
+        .add-property input[type="number"],
+        .add-property select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        .checkbox-container {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            /* Her bir label arasında boşluk */
+            margin-bottom: 15px;
+        }
+
+        .checkbox-container label {
+            display: flex;
+            align-items: center;
+            font-weight: bold;
+        }
+
+        .checkbox-container label span {
+            flex-grow: 1;
+            /* Metinlerin genişlemesini sağlar */
+        }
+
+        .checkbox-container label input[type="checkbox"] {
+            margin-left: 10px;
+            transform: scale(1.2);
+        }
+
+        .add-property button {
+            width: 100%;
+            padding: 10px;
+            background-color: #28a745;
+            color: white;
+            cursor: pointer;
+            font-size: 16px;
+            border: none;
+            border-radius: 4px;
+            transition: background-color 0.3s ease;
+            margin-top: 10px;
+        }
+
+        .add-property button:hover {
+            background-color: #218838;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>Daireler</h1>
+
+    <div class="add-property">
+        <h3>Yeni Mülk Ekle</h3>
+        <input type="text" id="propertyColor" placeholder="Renk" />
+        <input type="number" id="propertyRooms" placeholder="Oda Sayısı" />
+        <input type="number" id="propertyBathrooms" placeholder="Banyo Sayısı" />
+        <input type="text" id="propertyKitchen" placeholder="Mutfak Tipi" />
+        <input type="text" id="propertyAddress" placeholder="Adres" />
+        <input type="number" id="propertyAge" placeholder="Bina Yaşı" />
+        <input type="number" id="propertyFloor" placeholder="Kat Seviyesi" />
+
+        <div class="checkbox-container">
+            <label>
+                <span>Garaj Var</span>
+                <input type="checkbox" id="propertyGarage" />
+            </label>
+            <label>
+                <span>Doğalgaz Var</span>
+                <input type="checkbox" id="propertyGas" />
+            </label>
+            <label>
+                <span>Alttan Isıtma Var</span>
+                <input type="checkbox" id="propertyHeating" />
+            </label>
+            <label>
+                <span>Merkezi Konum</span>
+                <input type="checkbox" id="propertyCentral" />
+            </label>
+        </div>
+
+        <button id="addPropertyButton">Ekle</button>
+    </div>
+
+
+
+
+    <div class="filters">
+        <h3>Filtreler</h3>
+        <label>
+            Renk:
+            <select id="colorFilter">
+                <option value="">Tümü</option>
+
+            </select>
+        </label>
+
+        <label>
+            Mutfak Tipi:
+            <select id="kitchen_typeFilter">
+                <option value="">Tümü</option>
+                <option value="modern">Modern</option>
+                <option value="classic">Klasik</option>
+                <option value="open-plan">Açık Plan</option>
+                <option value="kitchenette">Küçük Mutfak</option>
+            </select>
+        </label>
+
+        <label>
+            Oda Sayısı:
+            <select id="room_countFilter">
+                <option value="">Tümü</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+                <option value="6">6</option>
+            </select>
+        </label>
+
+        <label>
+            Banyo Sayısı:
+            <select id="bath_countFilter">
+                <option value="">Tümü</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+            </select>
+        </label>
+
+        <label>
+            Bina Yaşı:
+            <select id="build_ageFilter">
+                <option value="">Tümü</option>
+                <option value="0-10">10 Yaşından Küçük</option>
+                <option value="10-25">10-25 Yaş Arası</option>
+                <option value="25+">25 Yaşından Büyük</option>
+            </select>
+        </label>
+
+        <label>
+            Merkezi Konum:
+            <select id="is_centralFilter">
+                <option value="">Tümü</option>
+                <option value="true">Evet</option>
+                <option value="false">Hayır</option>
+            </select>
+        </label>
+
+        <label><input type="checkbox" id="has_garageFilter"> Garaj Var</label>
+        <label><input type="checkbox" id="has_gasFilter"> Doğalgaz Var</label>
+        <label><input type="checkbox" id="has_heatingFilter"> Alttan Isıtma Var</label>
+
+        <button id="filterButton">Filtrele</button>
+    </div>
+
+    <div id="propertyList"></div>
+
+    <!-- Modal -->
+    <div id="editModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Mülkü Düzenle</h2>
+            <input type="text" id="editPropertyColor" placeholder="Renk" />
+            <input type="number" id="editPropertyRooms" placeholder="Oda Sayısı" />
+            <input type="number" id="editPropertyBathrooms" placeholder="Banyo Sayısı" />
+            <input type="text" id="editPropertyKitchen" placeholder="Mutfak Tipi" />
+            <input type="text" id="editPropertyAddress" placeholder="Adres" />
+            <input type="number" id="editPropertyAge" placeholder="Bina Yaşı" />
+            <input type="number" id="editPropertyFloor" placeholder="Kat Seviyesi" />
+            <label>
+                <input type="checkbox" id="editPropertyGarage" /> Garaj Var
+            </label>
+            <label>
+                <input type="checkbox" id="editPropertyGas" /> Doğalgaz Var
+            </label>
+            <label>
+                <input type="checkbox" id="editPropertyHeating" /> Alttan Isıtma Var
+            </label>
+            <label>
+                <input type="checkbox" id="editPropertyCentral" /> Merkezi Konum
+            </label>
+            <button id="saveChangesButton">Kaydet</button>
+        </div>
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        const socket = io();
+
+        const propertyListDiv = document.getElementById('propertyList');
+        const colorFilter = document.getElementById('colorFilter');
+        const kitchen_typeFilter = document.getElementById('kitchen_typeFilter');
+        const room_countFilter = document.getElementById('room_countFilter');
+        const bath_countFilter = document.getElementById('bath_countFilter');
+        const build_ageFilter = document.getElementById('build_ageFilter');
+        const is_centralFilter = document.getElementById('is_centralFilter');
+        const has_garageFilter = document.getElementById('has_garageFilter');
+        const has_gasFilter = document.getElementById('has_gasFilter');
+        const has_heatingFilter = document.getElementById('has_heatingFilter');
+        const filterButton = document.getElementById('filterButton');
+
+        const addPropertyButton = document.getElementById('addPropertyButton');
+
+        // Modal ile ilgili elementler
+        const editModal = document.getElementById('editModal');
+        const closeModal = document.getElementsByClassName('close')[0];
+        const saveChangesButton = document.getElementById('saveChangesButton');
+
+        let editingPropertyId;
+
+        // Yeni mülk ekleme işlemi
+        addPropertyButton.addEventListener('click', () => {
+            const property = {
+                color: document.getElementById('propertyColor').value,
+                number_of_rooms: parseInt(document.getElementById('propertyRooms').value),
+                number_of_bathrooms: parseInt(document.getElementById('propertyBathrooms').value),
+                kitchen_type: document.getElementById('propertyKitchen').value,
+                address: document.getElementById('propertyAddress').value,
+                building_age: parseInt(document.getElementById('propertyAge').value),
+                floor_level: parseInt(document.getElementById('propertyFloor').value),
+                has_garage: document.getElementById('propertyGarage').checked,
+                has_natural_gas: document.getElementById('propertyGas').checked,
+                has_underfloor_heating: document.getElementById('propertyHeating').checked,
+                is_central_location: document.getElementById('propertyCentral').checked
+            };
+
+            socket.emit('createProperty', property, (response) => {
+                if (response.success) {
+                    alert('Mülk başarıyla eklendi');
+                    fetchProperties(); // Mülkleri tekrar yükle
+                    updateFilters(property); // Yeni mülkün özelliklerini filtrelere ekle
+                } else {
+                    alert('Mülk eklenirken hata oluştu: ' + response.message);
+                }
+            });
+        });
+
+        function updateFilters(property) {
+            addOptionToSelect(colorFilter, property.color);
+            addOptionToSelect(kitchen_typeFilter, property.kitchen_type);
+        }
+
+        function addOptionToSelect(selectElement, value) {
+            if (value && !Array.from(selectElement.options).some(option => option.value === value)) {
+                const newOption = document.createElement('option');
+                newOption.value = value;
+                newOption.text = value.charAt(0).toUpperCase() + value.slice(1);
+                selectElement.add(newOption);
+            }
+        }
+
+        // Sunucudan mülk verilerini çek
+        async function fetchProperties() {
+            try {
+                const response = await fetch('/api/properties');
+                const properties = await response.json();
+                displayProperties(properties);
+                properties.forEach(updateFilters); // Mevcut mülklerden gelen verileri filtrelere ekle
+            } catch (error) {
+                console.error('Veri çekme hatası:', error);
+            }
+        }
+
+        function displayProperties(properties) {
+            propertyListDiv.innerHTML = ''; // Önceki içeriği temizle
+
+            properties.forEach(property => {
+                const propertyDiv = document.createElement('div');
+                propertyDiv.className = 'property';
+
+                propertyDiv.innerHTML = `
+                    <h2>Mülk ID: ${property.property_id}</h2>
+                    <p data-value="${property.color}" data-key="color"><strong>Renk:</strong> ${property.color}</p>
+                    <p data-value="${property.number_of_rooms}" data-key="room_count"><strong>Oda Sayısı:</strong> ${property.number_of_rooms}</p>
+                    <p data-value="${property.number_of_bathrooms}" data-key="bath_count"><strong>Banyo Sayısı:</strong> ${property.number_of_bathrooms}</p>
+                    <p data-value="${property.kitchen_type}" data-key="kitchen_type"><strong>Mutfak Tipi:</strong> ${property.kitchen_type}</p>
+                    <p data-value="${property.has_garage ? 'Var' : 'Yok'}" data-key="has_garage"><strong>Garaj:</strong> ${property.has_garage ? 'Var' : 'Yok'}</p>
+                    <p data-value="${property.has_natural_gas ? 'Var' : 'Yok'}" data-key="has_gas"><strong>Doğalgaz:</strong> ${property.has_natural_gas ? 'Var' : 'Yok'}</p>
+                    <p data-value="${property.has_underfloor_heating ? 'Var' : 'Yok'}" data-key="has_heating"><strong>Alttan Isıtma:</strong> ${property.has_underfloor_heating ? 'Var' : 'Yok'}</p>
+                    <p data-value="${property.building_age}" data-key="build_age"><strong>Bina Yaşı:</strong> ${property.building_age}</p>
+                    <p data-value="${property.floor_level}" data-key="floor_levels"><strong>Kat Seviyesi:</strong> ${property.floor_level}</p>
+                    <p data-value="${property.address}" data-key="build_adress"><strong>Adres:</strong> ${property.address}</p>
+                    <p data-value="${property.is_central_location ? 'true' : 'false'}" data-key="is_central"><strong>Merkezi Konum:</strong> ${property.is_central_location ? 'Evet' : 'Hayır'}</p>
+                    <button onclick="openEditModal(${property.property_id}, '${property.color}', ${property.number_of_rooms}, ${property.number_of_bathrooms}, '${property.kitchen_type}', '${property.address}', ${property.building_age}, ${property.floor_level}, ${property.has_garage}, ${property.has_natural_gas}, ${property.has_underfloor_heating}, ${property.is_central_location})">Düzenle</button>
+                    <button onclick="deleteProperty(${property.property_id})" class="delete">Sil</button>
+                `;
+
+                propertyListDiv.appendChild(propertyDiv);
+            });
+        }
+
+        function openEditModal(propertyId, color, number_of_rooms, number_of_bathrooms, kitchen_type, address, building_age, floor_level, has_garage, has_natural_gas, has_underfloor_heating, is_central_location) {
+            editingPropertyId = propertyId;
+            document.getElementById('editPropertyColor').value = color;
+            document.getElementById('editPropertyRooms').value = number_of_rooms;
+            document.getElementById('editPropertyBathrooms').value = number_of_bathrooms;
+            document.getElementById('editPropertyKitchen').value = kitchen_type;
+            document.getElementById('editPropertyAddress').value = address;
+            document.getElementById('editPropertyAge').value = building_age;
+            document.getElementById('editPropertyFloor').value = floor_level;
+            document.getElementById('editPropertyGarage').checked = has_garage;
+            document.getElementById('editPropertyGas').checked = has_natural_gas;
+            document.getElementById('editPropertyHeating').checked = has_underfloor_heating;
+            document.getElementById('editPropertyCentral').checked = is_central_location;
+
+            editModal.style.display = 'block';
+        }
+
+        saveChangesButton.addEventListener('click', () => {
+            const updatedProperty = {
+                property_id: editingPropertyId,
+                color: document.getElementById('editPropertyColor').value,
+                number_of_rooms: parseInt(document.getElementById('editPropertyRooms').value),
+                number_of_bathrooms: parseInt(document.getElementById('editPropertyBathrooms').value),
+                kitchen_type: document.getElementById('editPropertyKitchen').value,
+                address: document.getElementById('editPropertyAddress').value,
+                building_age: parseInt(document.getElementById('editPropertyAge').value),
+                floor_level: parseInt(document.getElementById('editPropertyFloor').value),
+                has_garage: document.getElementById('editPropertyGarage').checked,
+                has_natural_gas: document.getElementById('editPropertyGas').checked,
+                has_underfloor_heating: document.getElementById('editPropertyHeating').checked,
+                is_central_location: document.getElementById('editPropertyCentral').checked
+            };
+
+            socket.emit('updateProperty', updatedProperty);
+
+            socket.on('updatePropertyResult', (response) => {
+                if (response.success) {
+                    fetchProperties(); // Listeyi güncelle
+                    editModal.style.display = 'none';
+                } else {
+                    alert(response.message || 'Mülk güncellenirken bir hata oluştu.');
+                }
+            });
+        });
+
+        closeModal.addEventListener('click', () => {
+            editModal.style.display = 'none';
+        });
+
+        window.onclick = function (event) {
+            if (event.target == editModal) {
+                editModal.style.display = 'none';
+            }
+        }
+
+        function deleteProperty(property_id) {
+            if (confirm('Bu mülkü silmek istediğinize emin misiniz?')) {
+                socket.emit('deleteProperty', property_id);
+                socket.on('deletePropertyResult', (result) => {
+                    if (result.success) {
+                        alert('Mülk başarıyla silindi.');
+                        fetchProperties(); // Mülk silindikten sonra listeyi güncelle
+                    } else {
+                        alert('Mülk silinirken bir hata oluştu.');
+                    }
+                });
+            }
+        }
+
+        function filterProperties() {
+            const selectFilters = Array.from(document.querySelectorAll('.filters select')).map(e => {
+                return { value: e.value, key: e.id.replace('Filter', '') };
+            });
+
+            const checkboxFilters = Array.from(document.querySelectorAll('.filters input:checked')).map(e => {
+                return { value: 'Var', key: e.id.replace('Filter', '') };
+            });
+
+            const allFilters = selectFilters.concat(checkboxFilters);
+
+            document.querySelectorAll('#propertyList .property').forEach(propertyDiv => {
+                let matchesAll = true;
+
+                allFilters.forEach(filter => {
+                    if (filter.value !== '' && filter.value !== 'Yok') {
+                        if (filter.key === 'build_age') {
+                            const age = parseInt(propertyDiv.querySelector('p[data-key="build_age"]').getAttribute('data-value'));
+                            if ((filter.value === '0-10' && !(age >= 0 && age <= 10)) ||
+                                (filter.value === '10-25' && !(age > 10 && age <= 25)) ||
+                                (filter.value === '25+' && age <= 25)) {
+                                matchesAll = false;
+                            }
+                        } else {
+                            const pElement = propertyDiv.querySelector(`p[data-key="${filter.key}"][data-value="${filter.value}"]`);
+                            if (!pElement) {
+                                matchesAll = false;
+                            }
+                        }
+                    }
+                });
+
+                propertyDiv.style.display = matchesAll ? 'block' : 'none';
+            });
+        }
+
+        // İlk yükleme sırasında tüm mülkleri göster
+        fetchProperties();
+
+        // Filtrele butonuna tıklama olayını dinle
+        filterButton.addEventListener('click', filterProperties);
+    </script>
+
+</body>
+
+</html>

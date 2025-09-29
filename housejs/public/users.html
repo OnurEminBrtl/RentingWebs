@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kullanıcılar</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            padding: 20px;
+            margin: 0;
+        }
+
+        .user-container {
+            background-color: #fff;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .user-photo {
+            width: 80px;
+            height: 80px;
+            background-color: #ddd;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: #fff;
+        }
+
+        .user-details {
+            line-height: 1.5;
+        }
+
+        .buttons {
+            margin-bottom: 20px;
+        }
+
+        button {
+            padding: 10px 20px;
+            margin-right: 10px;
+            border: none;
+            background-color: #28a745;
+            color: white;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        button:hover {
+            background-color: #218838;
+        }
+
+        .action-buttons {
+            margin-top: 10px;
+        }
+
+        .action-buttons button {
+            background-color: #007bff;
+        }
+
+        .action-buttons button.delete {
+            background-color: #ff4d4d;
+        }
+
+        .action-buttons button.delete:hover {
+            background-color: #cc0000;
+        }
+
+        .action-buttons button.edit:hover {
+            background-color: #0056b3;
+        }
+
+
+        /* Modal stil ayarları */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.6);
+            padding-top: 60px;
+        }
+
+        .modal-content {
+            background-color: #fff;
+            margin: 5% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 500px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .modal-content h2 {
+            text-align: center;
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .modal-content label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: bold;
+            color: #555;
+        }
+
+        .modal-content input[type="text"],
+        .modal-content input[type="number"],
+        .modal-content input[type="password"] {
+            width: calc(100% - 20px);
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-sizing: border-box;
+            font-size: 16px;
+        }
+
+        .modal-content input[type="checkbox"] {
+            margin-right: 10px;
+            transform: scale(1.3);
+        }
+
+        .modal-content button {
+            width: 100%;
+            padding: 12px 20px;
+            background-color: #28a745;
+            color: white;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 15px;
+            transition: background-color 0.3s ease;
+        }
+
+        .modal-content button:hover {
+            background-color: #218838;
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: #000;
+            text-decoration: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="buttons">
+        <button id="getUsersButton">Kullanicilari Getir</button>
+        <button style="display: none;" id="addUsersButton">Kullanicilari Ekle</button>
+    </div>
+    <div id="userList"></div>
+
+    <!-- Düzenleme Modalı -->
+    <div id="editModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Kullaniciyi Düzenle</h2>
+            <label for="editKullaniciadi">Kullanici Adi:</label>
+            <input type="text" id="editKullaniciadi" />
+            <label for="editSifre">Şifre:</label>
+            <input type="text" id="editSifre" />
+            <label for="editPin">PIN:</label>
+            <input type="number" id="editPin" />
+            <label for="editTarih">Tarih:</label>
+            <input type="text" id="editTarih" />
+            <label for="editAdres">Adres:</label>
+            <input type="text" id="editAdres" />
+            <label for="editAdmin">Admin:</label>
+            <input type="checkbox" id="editAdmin" />
+            <button id="saveChangesButton">Kaydet</button>
+        </div>
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        const socket = io();
+        const editModal = document.getElementById('editModal');
+        const closeModal = document.getElementsByClassName('close')[0];
+        const saveChangesButton = document.getElementById('saveChangesButton');
+        // Modal'ı kapatma fonksiyonu
+        closeModal.addEventListener('click', () => {
+            editModal.style.display = "none";
+        });
+        // Modal dışında bir yere tıklayınca kapatma fonksiyonu
+        window.onclick = function (event) {
+            if (event.target == editModal) {
+                editModal.style.display = "none";
+            }
+        }
+        // 'Kullanıcıları Getir' butonuna tıklama olayını dinle
+        document.getElementById('getUsersButton').addEventListener('click', () => {
+            socket.emit('getUsers');
+        });
+        // 'Kullanıcıları Ekle' butonuna tıklama olayını dinle
+        document.getElementById('addUsersButton').addEventListener('click', () => {
+            socket.emit('addUsers', users, (response) => {
+                const resultDiv = document.getElementById('userList');
+                if (response.success) {
+                    resultDiv.textContent = response.message;
+                } else {
+                    resultDiv.textContent = 'Hata: ' + response.message;
+                }
+            });
+        });
+        // Sunucudan kullanıcı verilerini al
+        socket.on('usersData', (users) => {
+            displayUsers(users);
+        });
+
+        // Kullanıcıları ekrana yazdır
+        function displayUsers(users) {
+            const userList = document.getElementById('userList');
+            userList.innerHTML = ''; // Mevcut içeriği temizle
+
+            users.forEach(user => {
+                const userContainer = document.createElement('div');
+                userContainer.className = 'user-container';
+                userContainer.innerHTML = `
+                    <div class="user-info">
+                        <div class="user-photo">${user.kullaniciadi[0]}</div>
+                        <div class="user-details">
+                            İsim: ${user.kullaniciadi}<br>
+                            Doğum Tarihi: ${user.tarih}<br>
+                            Adres: ${user.adres || 'Adres girilmemiş'}<br>
+                            Admin: ${user.admin ? 'Evet' : 'Hayır'}
+                        </div>
+                    </div>
+                    <div class="action-buttons">
+                        <button class="edit" onclick="editUser(${user.user_id}, 
+                        '${user.kullaniciadi}', '${user.sifre}',
+                         ${user.pin}, '${user.tarih}',
+                          '${user.adres}', ${user.admin})">Düzenle</button>
+                        <button class="delete" onclick="deleteUser(${user.user_id})">Sil</button>
+                    </div>
+                `;
+                userList.appendChild(userContainer);
+            });
+        }
+
+        // Kullanıcıyı silme işlemi
+        function deleteUser(userId) {
+            if (confirm('Bu kullanıcıyı silmek istediğinize emin misiniz?')) {
+                socket.emit('deleteUser', userId);
+                socket.emit('getUsers'); // Silme işleminden sonra listeyi yenile
+            }
+        }
+
+        // Kullanıcıyı düzenleme işlemi
+        function editUser(userId, kullaniciadi, sifre, pin, tarih, adres, admin) {
+            document.getElementById('editKullaniciadi').value = kullaniciadi;
+            document.getElementById('editSifre').value = sifre;
+            document.getElementById('editPin').value = pin;
+            document.getElementById('editTarih').value = tarih;
+            document.getElementById('editAdres').value = adres;
+            document.getElementById('editAdmin').checked = admin;
+            editModal.style.display = "block";
+            saveChangesButton.onclick = function () {
+                const updatedUser = {
+                    user_id: userId,
+                    kullaniciadi: document.getElementById('editKullaniciadi').value,
+                    sifre: document.getElementById('editSifre').value,
+                    pin: parseInt(document.getElementById('editPin').value),
+                    tarih: document.getElementById('editTarih').value,
+                    adres: document.getElementById('editAdres').value,
+                    admin: document.getElementById('editAdmin').checked
+                };
+                socket.emit('updateUser', updatedUser);
+                socket.on('updateResult', (response) => {
+                    if (response.success) {
+                        socket.emit('getUsers'); // Listeyi güncelle
+                        editModal.style.display = "none"; // Modal'ı kapat
+                    } else {
+                        alert(response.message || 'Kullanıcı güncellenirken bir hata oluştu.');
+                    }
+                });
+            }
+        }
+
+        // Hata mesajını al
+        socket.on('error', (message) => {
+            alert(message);
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Giriş Ekranı</title>
+
+</head>
+
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        background-color: #f0f0f0;
+    }
+
+    .kullanici_giris {
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .kullanici_giris label {
+        display: block;
+        margin-bottom: 10px;
+    }
+
+    .kullanici_giris input {
+        width: 100%;
+        padding: 8px 0 8px 0;
+        margin-bottom: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+    }
+
+    .message {
+        margin-top: 20px;
+        display: none;
+        color: green;
+        font-weight: bold;
+    }
+
+    .message {
+        margin-top: 20px;
+        display: none;
+        color: green;
+        font-weight: bold;
+    }
+
+    .radiolar>div>input {
+        width: 20px;
+    }
+
+    .radiolar>div {
+        display: flex;
+        width: 120px;
+    }
+
+    .radiolar>div>label {
+        width: 100px;
+        margin: 0;
+    }
+</style>
+
+<body>
+    <div id="loginScreen" class="kullanici_giris">
+        <form id="girisFormu">
+            <label>
+                Kullanıcı adı: <input type="text" id="kullaniciAdi" />
+            </label>
+            <label>
+                Şifre: <input type="password" id="sifre" />
+            </label>
+            <label>
+                PIN: <input type="text" id="pin" maxlength="4" oninput="validatePIN()" />
+            </label>
+            <label>
+                Date: <input type="date" id="tarih" />
+            </label>
+            <div id="userOptions" class="radiolar" style="overflow: auto;height: 330px; margin-bottom: 10px;">
+                <!-- Sunucudan gelen kullanıcılar buraya eklenecek -->
+            </div>
+
+            <!-- Display the random code -->
+            <div>
+                <span id="randomCode" style="font-weight: bold;"></span>
+                <input type="text" id="codeInput" placeholder="Kodu girin" />
+            </div>
+
+            <button onclick="girisYap()" type="button">Giriş Yap</button>
+            <button onclick="kaydol()" type="button">Kaydol</button>
+        </form>
+        <div class="message" id="message">Tebrikler, başarılı giriş yaptınız!</div>
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        const socket = io();
+
+        // Sayfa yüklendiğinde random code ve kullanıcıları yükle
+        window.onload = function () {
+            document.getElementById('randomCode').innerText = generateRandomCode();
+            loadUsersFromDB();
+        }
+
+        function validatePIN() {
+            var pinInput = document.getElementById('pin');
+            pinInput.value = pinInput.value.replace(/[^0-9]/g, '');
+        }
+
+        function generateRandomCode() {
+            var chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
+            var code = '';
+            for (var i = 0; i < 4; i++) {
+                code += chars.charAt(Math.floor(Math.random() * chars.length));
+            }
+            return code;
+        }
+
+        // Veritabanından kullanıcıları çek ve radio button'lara ekle
+        function loadUsersFromDB() {
+            socket.emit('getUsers');
+        }
+
+        socket.on('usersData', (users) => {
+            const userOptions = document.getElementById('userOptions');
+            userOptions.innerHTML = ''; // Eski radio butonları temizle
+            users.forEach(user => {
+                const userDiv = document.createElement('div');
+                userDiv.innerHTML = `<input type="radio" name="size" value="${user.kullaniciadi}" id="${user.kullaniciadi.toLowerCase()}">
+                                     <label for="${user.kullaniciadi.toLowerCase()}">${user.kullaniciadi}</label>`;
+                userOptions.appendChild(userDiv);
+            });
+        });
+
+        function kaydol() {
+            window.location.href = "register.html";
+        }
+
+        function girisYap() {
+            var kullaniciAdi = document.getElementById('kullaniciAdi').value;
+            var sifre = document.getElementById('sifre').value;
+            var pin = parseInt(document.getElementById('pin').value);
+            var tarih = document.getElementById('tarih').value;
+            var enteredCode = document.getElementById('codeInput').value;
+            var displayedCode = document.getElementById('randomCode').innerText;
+            // Radyo butonlarından seçilen kullanıcı adı
+            var selectedOption = document.querySelector('input[name="size"]:checked');
+            if (!selectedOption) {
+                alert('Lütfen bir kullanıcı seçin.');
+                return;
+            }
+            var selectedValue = selectedOption.value;
+            if (kullaniciAdi && sifre && pin && tarih && selectedValue && enteredCode) {
+                // Radyo butonu ile girilen kullanıcı adı eşleşiyor mu?
+                if (kullaniciAdi !== selectedValue) {
+                    alert('Girilen kullanıcı adı ile seçilen kullanıcı eşleşmiyor!');
+                    return;
+                }
+                socket.emit('login', {
+                    kullaniciAdi,sifre,pin,tarih,selectedValue,enteredCode,displayedCode
+                });
+            } else {
+                alert('Lütfen tüm alanları doldurun.');
+            }
+        }
+
+
+        socket.on('loginResult', (response) => {
+            const message = document.getElementById('message');
+            if (response.success) {
+                message.innerText = response.message;
+                message.style.color = 'green';
+                message.style.display = 'block';
+                setTimeout(() => {
+                    localStorage.setItem('loggedIn', 'true');
+                    window.location.href = response.redirectUrl;
+                }, 2000);
+            } else {
+                message.innerText = response.message;
+                message.style.color = 'red';
+                message.style.display = 'block';
+                setTimeout(() => {
+                    message.style.display = 'none';
+                }, 5000);
+            }
+        });
+    </script>
+</body>
+
+
+
+</html>

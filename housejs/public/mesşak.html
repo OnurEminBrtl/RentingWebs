@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mesajlaşma</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #chat-container {
+            display: flex;
+            height: 80vh;
+            width: 80vw;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            background-color: white;
+            position: relative;
+        }
+
+        .user-list {
+            width: 25%;
+            background-color: #f1f1f1;
+            border-right: 1px solid #ccc;
+            overflow-y: auto;
+            padding: 10px;
+            box-sizing: border-box;
+        }
+
+        .user-item {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            border-bottom: 1px solid #ccc;
+            cursor: pointer;
+        }
+
+        .user-item:hover {
+            background-color: #e0e0e0;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: #007bff;
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 20px;
+            margin-right: 10px;
+            flex-shrink: 0;
+        }
+
+        .user-avatar img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+            display: none;
+        }
+
+        .messages-container {
+            width: 75%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 20px;
+            background-color: #ffffff;
+            box-sizing: border-box;
+        }
+
+        #messages {
+            flex-grow: 1;
+            overflow-y: auto;
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin-bottom: 10px;
+            background-color: #f9f9f9;
+        }
+
+        .message {
+            margin-bottom: 10px;
+            padding: 10px;
+            border-radius: 5px;
+            max-width: 70%;
+            word-wrap: break-word;
+        }
+
+        .message.user {
+            background-color: #007bff;
+            color: white;
+            align-self: flex-end;
+            text-align: right;
+        }
+
+        .message.other {
+            background-color: #f1f1f1;
+            color: black;
+            align-self: flex-start;
+            text-align: left;
+        }
+
+        #message-input {
+            display: flex;
+            align-items: center;
+        }
+
+        #message-input input[type="text"] {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            margin-right: 10px;
+            box-sizing: border-box;
+        }
+
+        #message-input input[type="file"] {
+            margin-right: 10px;
+        }
+
+        #message-input button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            background-color: #007bff;
+            color: #fff;
+            cursor: pointer;
+        }
+
+        #notification {
+            position: absolute;
+            top: -100px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #333;
+            color: white;
+            padding: 15px;
+            border-radius: 5px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            opacity: 0;
+            transition: all 0.5s ease;
+            z-index: 1000;
+        }
+
+        #notification.show {
+            top: 10px;
+            opacity: 1;
+        }
+
+        .user-item.unread {
+            background-color: #ffcccc;
+        }
+
+        .user-item .last-message {
+            margin-left: 10px;
+            font-size: 12px;
+            color: #888;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 150px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="chat-container">
+        <div id="user-list" class="user-list">
+            <!-- Kullanıcılar burada listelenecek -->
+        </div>
+        <div id="messages-container" class="messages-container">
+            <div id="messages" class="messages"></div>
+            <div id="message-input" class="message-input">
+                <input onkeypress="if(event.keyCode == 13) sendMessage()" type="text" id="message"
+                    placeholder="Bir mesaj yazın">
+                <input type="file" id="fileInput">
+                <button onclick="sendMessage()">Gönder</button>
+            </div>
+        </div>
+        <div id="notification">Yeni mesaj var!</div>
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        const currentUser = prompt("Lütfen kendi kullanıcı kimliğinizi girin:");
+        const socket = io({ query: "user_id=" + currentUser });
+        let userDictionary = {};
+
+        socket.emit('getUsers_msg');
+        socket.on('usersData_msg', function (users) {
+            const userList = document.getElementById('user-list');
+            userList.innerHTML = '';
+
+            users.forEach(user => {
+                const userItem = document.createElement('div');
+                userItem.className = 'user-item';
+
+                const userAvatar = document.createElement('div');
+                userAvatar.className = 'user-avatar';
+
+                if (user.profilePhoto) {
+                    const img = document.createElement('img');
+                    img.src = user.profilePhoto;
+                    img.style.display = 'block';
+                    userAvatar.appendChild(img);
+                } else {
+                    userAvatar.textContent = user.kullaniciadi.charAt(0).toUpperCase();
+                }
+
+                const userName = document.createElement('span');
+                userName.textContent = user.kullaniciadi || 'Bilinmeyen Kullanıcı';
+
+                const lastMessage = document.createElement('span');
+                lastMessage.className = 'last-message';
+
+                socket.emit('getLastMessage', { userId: user.user_id, currentUser }, function (lastMsgData) {
+                    if (lastMsgData && lastMsgData.message) {
+                        const firstFourWords = lastMsgData.message.split(' ').slice(0, 4).join(' ');
+                        lastMessage.textContent = `: ${firstFourWords}...`;
+                    } else {
+                        lastMessage.textContent = ': Mesaj yok';
+                    }
+                });
+
+                userItem.appendChild(userAvatar);
+                userItem.appendChild(userName);
+                userItem.appendChild(lastMessage);
+                userItem.dataset.userId = user.user_id;
+
+                userDictionary[user.user_id] = user.kullaniciadi || 'Bilinmeyen Kullanıcı';
+
+                userItem.addEventListener('click', function () {
+                    const selectedUserId = this.dataset.userId;
+                    localStorage.acik_msg = selectedUserId;
+                    getAllMessages(selectedUserId);
+                });
+
+                userList.appendChild(userItem);
+            });
+
+            if (localStorage.acik_msg) {
+                getAllMessages(localStorage.acik_msg);
+            }
+        });
+
+        socket.on('connect', function () {
+            console.log('Bağlantı başarılı: ' + currentUser);
+        });
+
+        function getAllMessages(user_id) {
+            localStorage.acik_msg = user_id;
+            document.getElementById('messages').innerHTML = '';
+            socket.emit('getAllMessages', { user_id, currentUser }, (mess) => {
+                for (let i = 0; i < mess.length; i++) {
+                    var veri = mess[i];
+                    veri.senderId = veri.sender_id;
+                    createMessageElement(veri);
+                }
+            });
+        }
+
+        socket.on('messagesBetweenUsersResult', function (messages) {
+            const messageContainer = document.getElementById('messages');
+            messageContainer.innerHTML = '';
+
+            messages.forEach(data => {
+                const messageElement = document.createElement('div');
+                messageElement.textContent = data.message;
+                messageElement.classList.add('message');
+
+                if (data.sender_id === currentUser) {
+                    messageElement.classList.add('user');
+                  
+                } else {
+                    messageElement.classList.add('other');
+                }
+
+                messageContainer.appendChild(messageElement);
+            });
+
+            messageContainer.scrollTop = messageContainer.scrollHeight;
+        });
+
+        socket.on('receiveMessage', function (data) {
+            const selectedUserId = localStorage.acik_msg;
+
+            updateLastMessage(data.senderId, data.message);
+
+            if (data.senderId === selectedUserId || data.receiverId === selectedUserId) {
+                createMessageElement(data);
+            } else {
+                showNotification(`${userDictionary[data.senderId]} kullanıcısından yeni mesajınız var!`);
+            }
+        });
+
+        function updateLastMessage(userId, message) {
+            const userItem = document.querySelector(`.user-item[data-user-id="${userId}"]`);
+            if (userItem) {
+                const lastMessageElement = userItem.querySelector('.last-message');
+                const firstFourWords = message.split(' ').slice(0, 4).join(' ');
+                lastMessageElement.textContent = `: ${firstFourWords}...`;
+            }
+        }
+
+        function sendMessage() {
+            const messageInput = document.getElementById('message');
+            const message = messageInput.value;
+            const targetUserId = localStorage.acik_msg;
+            //console.log(targetUserId);
+            const fileInput = document.getElementById('fileInput');
+            const file = fileInput.files[0];
+
+            if (file) {
+                const reader = new FileReader();
+
+                reader.onload = function (event) {
+                    const arrayBuffer = event.target.result;
+
+                    socket.emit('sendBlobToUser', {
+                        targetUserId,
+                        blob: arrayBuffer,
+                        fileName: file.name,
+                        fileType: file.type,
+                        senderId: currentUser
+                    });
+
+                    updateLastMessage(targetUserId, `Dosya gönderildi: ${file.name}`);
+                };
+
+                reader.readAsArrayBuffer(file);
+            } else if (message && targetUserId) {
+                socket.emit('sendMessageToUser', { targetUserId, message, senderId: currentUser });
+
+                updateLastMessage(targetUserId, message);
+
+                messageInput.value = '';
+                createMessageElement({ message, senderId: currentUser });
+            }
+        }
+
+        function createMessageElement(data) {
+            const messageContainer = document.getElementById('messages');
+            const messageElement = document.createElement('div');
+            messageElement.classList.add('message');
+
+            if (data.sender_id === currentUser) {
+                messageElement.classList.add('user');
+            } else {
+                messageElement.classList.add('other');
+            }
+
+            if (data.message) {
+                const textElement = document.createElement('p');
+                textElement.textContent = data.message;
+                messageElement.appendChild(textElement);
+            }
+
+            // Dosya var mı kontrol et ve göster
+            if (data.file_data && data.file_type.startsWith('image/')) {
+                const img = document.createElement('img');
+                img.src = `data:${data.file_type};base64,${data.file_data}`;
+                img.alt = data.file_name;
+                img.style.maxWidth = '200px';
+                img.style.display = 'block';
+                img.style.margin = '10px auto';
+                messageElement.appendChild(img);
+            } else if (data.file_data) {
+                const link = document.createElement('a');
+                link.href = `data:${data.file_type};base64,${data.file_data}`;
+                link.download = data.file_name;
+                link.textContent = `Dosyayı indir: ${data.file_name}`;
+                link.style.display = 'block';
+                link.style.margin = '10px auto';
+                messageElement.appendChild(link);
+            }
+
+            messageContainer.appendChild(messageElement);
+            messageContainer.scrollTop = messageContainer.scrollHeight;
+        }
+
+
+
+        function showNotification(message) {
+            const notification = document.getElementById('notification');
+            notification.textContent = message;
+            notification.classList.add('show');
+
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
+        }
+    </script>
+</body>
+
+</html>
