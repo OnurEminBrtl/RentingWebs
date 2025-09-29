@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Document</title>
+	<link rel="stylesheet" href="style.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
+
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap" rel="stylesheet">
+
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&display=swap" rel="stylesheet">
+
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Assistant:wght@200..800&display=swap" rel="stylesheet">
+	
+	<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+</head>
+
+
+<body>
+	<div class="container">
+
+		<div class="header">
+
+			<div class="top_header">
+				<img  src="img/logofirst.png" alt="">
+				<div class="header_link">
+					<a href="#">Home</a>
+					<a href="#">Landloard</a>
+					<a href="#">Tenants</a>
+					<a href="#">Contact Us</a>
+					<button onclick="cikisYap()" type="button">  çıkış yap</button>
+				</div>
+
+			</div>
+			<div class="header_content">
+				<div class="header_content_text">
+					The Most Affortable <br> Place To Stay In The <br>San Franciso Bay Area
+				</div>
+				<div class="header_content_search">
+					<div class="maps_holder">
+						<iframe
+							src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d51215.04818853983!2d29.08067048096895!3d36.65188171726573!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14c0439b0db6b13b%3A0x87150704244f70d7!2zRmV0aGl5ZSwgTXXEn2xh!5e0!3m2!1str!2str!4v1719927830419!5m2!1str!2str"
+							allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+					</div>
+					<div class="selectbg">
+						<div class="header_content_selectbox">
+								<select class="alltype">
+									<option value=""><p>Muğla</p></option>
+									<option value=""><p>Antalya</p></option>
+									<option value=""><p>Denizli</p></option>
+									<option value=""><p>İzmir</p></option>
+									<option value=""><p>Sakarya</p></option>
+								</select>
+							<select class="neighbor">
+								<option value="">Aydinlikevler</option>
+								<option value="">Yenievler</option>
+								<option value="">Bahçelievler</option>
+								<option value=""> Kadikoy</option>
+								<option value="">Atatürk Bulvari</option>
+							</select>
+							<button class="header_content_search_button" type="button"> <i class="fa fa-search"></i></button>
+						</div>
+					</div>
+
+				</div>
+			</div>
+		</div>
+		<div class="content">
+				<h1 class="firsth1" >Minimum Living Cost Takes Care Of Everything</h1>
+			<div class="specific-content">
+				<div class="content_img">
+					<img src="https://picsum.photos/seed/picsum/387/521" alt="">
+				</div>
+				<div class="logos">
+						<div class="logos2">
+								<i class="material-icons">paid</i>	
+							<span class="span1">Pay As Little <br> As Possible!</span>
+						</div>
+						<div class="logos2">
+								<i class="material-icons">home_work</i>
+							<span class="span2">Enjoy Wisdom <br> Of Community!</span>
+						</div>
+						<div class="logos2">
+								<i class="material-icons">paid</i>
+							<span class="span3">Lets Somebody Else <br> Take Care Of Landlord!</span>
+						</div>
+						<div class="logos2">
+								<i class="material-icons">verified_user</i>
+							<span class="span4">Enjoy Peaceful <br>Environment!</span>
+						</div>
+						<div class="logos2">
+								<i class="material-icons">health_and_safety</i>
+							<span class="span5">Stay Safe! <br>Save Money!</span>
+						</div>
+						<div class="logos2">
+								<i class="material-icons">visibility</i>
+							<span class="span6" >Pay For What <br>You use!</span>
+						</div>
+				</div>
+			</div>
+
+				<div  class="list_of_property">
+					<h1>
+						List Of Properties <button class="mybutton">Viev All Property</button>
+					</h1>
+
+					<div class="swiper mySwiper">
+						<div class="swiper-wrapper">
+						  <div class="swiper-slide">
+							<div class="imgsholder">
+								<div class="property-card">
+									<img src="https://picsum.photos/seed/picsum/358/283" alt="">
+									<div class="property-details">
+										<p>2578 Folsom Street,San Francisco,CA,94110</p>
+										<p class="priv_room">Private Room</p>
+										<p class="price">$1200/Month</p>
+										<div class="property-info">
+											<span class="icon bed">4</span>
+											<span class="icon bath">2</span>
+											<span class="icon size">2</span>
+										</div>
+									</div>
+								</div>
+								<div class="property-card">
+									<img src="https://picsum.photos/seed/picsum/358/283" alt="">
+									<div class="property-details">
+										<p>2578 Folsom Street,San Francisco,CA,94110</p>
+										<p class="priv_room">Private Room</p>
+										<p class="price">$1200/Month</p>
+										<div class="property-info">
+											<span class="icon bed">4</span>
+											<span class="icon bath">2</span>
+											<span class="icon size">2</span>
+										</div>
+									</div>
+								</div>
+								<div class="property-card">
+									<img src="https://picsum.photos/seed/picsum/358/283" alt="">
+									<div class="property-details">
+										<p>2578 Folsom Street,San Francisco,CA,94110</p>
+										<p class="priv_room">Private Room</p>
+										<p class="price">$1200/Month</p>
+										<div class="property-info">
+											<span class="icon bed">4</span>
+											<span class="icon bath">2</span>
+											<span class="icon size">2</span>
+										</div>
+									</div>
+								</div>
+								<div class="property-card">
+									<img src="https://picsum.photos/seed/picsum/358/283" alt="">
+									<div class="property-details">
+										<p>2578 Folsom Street,San Francisco,CA,94110</p>
+										<p class="priv_room">Private Room</p>
+										<p class="price">$1200/Month</p>
+										<div class="property-info">
+											<span class="icon bed">4</span>
+											<span class="icon bath">2</span>
+											<span class="icon size">2</span>
+										</div>
+									</div>
+								</div>
+								<div class="property-card">
+									<img src="https://picsum.photos/seed/picsum/358/283" alt="">
+									<div class="property-details">
+										<p>2578 Folsom Street,San Francisco,CA,94110</p>
+										<p class="priv_room">Private Room</p>
+										<p class="price">$1200/Month</p>
+										<div class="property-info">
+											<span class="icon bed">4</span>
+											<span class="icon bath">2</span>
+											<span class="icon size">2</span>
+										</div>
+									</div>
+								</div>
+								<div class="property-card">
+									<img src="https://picsum.photos/seed/picsum/358/283" alt="">
+									<div class="property-details">
+										<p>2578 Folsom Street,San Francisco,CA,94110</p>
+										<p class="priv_room">Private Room</p>
+										<p class="price">$1200/Month</p>
+										<div class="property-info">
+											<span class="icon bed">4</span>
+											<span class="icon bath">2</span>
+											<span class="icon size">2</span>
+										</div>
+									</div>
+								</div>
+							</div>
+						  </div>
+						  <div class="swiper-slide">
+							<div class="imgsholder">
+								<div class="property-card">
+									<img src="https://picsum.photos/seed/picsum/358/283" alt="">
+									<div class="property-details">
+										<p>2578 Folsom Street,San Francisco,CA,94110</p>
+										<p class="priv_room">Private Room</p>
+										<p class="price">$1200/Month</p>
+										<div class="property-info">
+											<span class="icon bed">4</span>
+											<span class="icon bath">2</span>
+											<span class="icon size">2</span>
+										</div>
+									</div>
+								</div>
+								<div class="property-card">
+									<img src="https://picsum.photos/seed/picsum/358/283" alt="">
+									<div class="property-details">
+										<p>2578 Folsom Street,San Francisco,CA,94110</p>
+										<p class="priv_room">Private Room</p>
+										<p class="price">$1200/Month</p>
+										<div class="property-info">
+											<span class="icon bed">4</span>
+											<span class="icon bath">2</span>
+											<span class="icon size">2</span>
+										</div>
+									</div>
+								</div>
+								<div class="property-card">
+									<img src="https://picsum.photos/seed/picsum/358/283" alt="">
+									<div class="property-details">
+										<p>2578 Folsom Street,San Francisco,CA,94110</p>
+										<p class="priv_room">Private Room</p>
+										<p class="price">$1200/Month</p>
+										<div class="property-info">
+											<span class="icon bed">4</span>
+											<span class="icon bath">2</span>
+											<span class="icon size">2</span>
+										</div>
+									</div>
+								</div>
+								<div class="property-card">
+									<img src="https://picsum.photos/seed/picsum/358/283" alt="">
+									<div class="property-details">
+										<p>2578 Folsom Street,San Francisco,CA,94110</p>
+										<p class="priv_room">Private Room</p>
+										<p class="price">$1200/Month</p>
+										<div class="property-info">
+											<span class="icon bed">4</span>
+											<span class="icon bath">2</span>
+											<span class="icon size">2</span>
+										</div>
+									</div>
+								</div>
+								<div class="property-card">
+									<img src="https://picsum.photos/seed/picsum/358/283" alt="">
+									<div class="property-details">
+										<p>2578 Folsom Street,San Francisco,CA,94110</p>
+										<p class="priv_room">Private Room</p>
+										<p class="price">$1200/Month</p>
+										<div class="property-info">
+											<span class="icon bed">4</span>
+											<span class="icon bath">2</span>
+											<span class="icon size">2</span>
+										</div>
+									</div>
+								</div>
+								<div class="property-card">
+									<img src="https://picsum.photos/seed/picsum/358/283" alt="">
+									<div class="property-details">
+										<p>2578 Folsom Street,San Francisco,CA,94110</p>
+										<p class="priv_room">Private Room</p>
+										<p class="price">$1200/Month</p>
+										<div class="property-info">
+											<span class="icon bed">4</span>
+											<span class="icon bath">2</span>
+											<span class="icon size">2</span>
+										</div>
+									</div>
+								</div>
+							</div>
+						  </div>
+						  <div class="swiper-slide">
+							<div class="imgsholder">
+								<div class="property-card">
+									<img src="https://picsum.photos/seed/picsum/358/283" alt="">
+									<div class="property-details">
+										<p>2578 Folsom Street,San Francisco,CA,94110</p>
+										<p class="priv_room">Private Room</p>
+										<p class="price">$1200/Month</p>
+										<div class="property-info">
+											<span class="icon bed">4</span>
+											<span class="icon bath">2</span>
+											<span class="icon size">2</span>
+										</div>
+									</div>
+								</div>
+								<div class="property-card">
+									<img src="https://picsum.photos/seed/picsum/358/283" alt="">
+									<div class="property-details">
+										<p>2578 Folsom Street,San Francisco,CA,94110</p>
+										<p class="priv_room">Private Room</p>
+										<p class="price">$1200/Month</p>
+										<div class="property-info">
+											<span class="icon bed">4</span>
+											<span class="icon bath">2</span>
+											<span class="icon size">2</span>
+										</div>
+									</div>
+								</div>
+								<div class="property-card">
+									<img src="https://picsum.photos/seed/picsum/358/283" alt="">
+									<div class="property-details">
+										<p>2578 Folsom Street,San Francisco,CA,94110</p>
+										<p class="priv_room">Private Room</p>
+										<p class="price">$1200/Month</p>
+										<div class="property-info">
+											<span class="icon bed">4</span>
+											<span class="icon bath">2</span>
+											<span class="icon size">2</span>
+										</div>
+									</div>
+								</div>
+								<div class="property-card">
+									<img src="https://picsum.photos/seed/picsum/358/283" alt="">
+									<div class="property-details">
+										<p>2578 Folsom Street,San Francisco,CA,94110</p>
+										<p class="priv_room">Private Room</p>
+										<p class="price">$1200/Month</p>
+										<div class="property-info">
+											<span class="icon bed">4</span>
+											<span class="icon bath">2</span>
+											<span class="icon size">2</span>
+										</div>
+									</div>
+								</div>
+								<div class="property-card">
+									<img src="https://picsum.photos/seed/picsum/358/283" alt="">
+									<div class="property-details">
+										<p>2578 Folsom Street,San Francisco,CA,94110</p>
+										<p class="priv_room">Private Room</p>
+										<p class="price">$1200/Month</p>
+										<div class="property-info">
+											<span class="icon bed">4</span>
+											<span class="icon bath">2</span>
+											<span class="icon size">2</span>
+										</div>
+									</div>
+								</div>
+								<div class="property-card">
+									<img src="https://picsum.photos/seed/picsum/358/283" alt="">
+									<div class="property-details">
+										<p>2578 Folsom Street,San Francisco,CA,94110</p>
+										<p class="priv_room">Private Room</p>
+										<p class="price">$1200/Month</p>
+										<div class="property-info">
+											<span class="icon bed">4</span>
+											<span class="icon bath">2</span>
+											<span class="icon size">2</span>
+										</div>
+									</div>
+								</div>
+							</div>
+						  </div>
+
+						</div>
+						<div class="swiper-button-next"></div>
+						<div class="swiper-button-prev"></div>
+						<div class="swiper-pagination"></div>
+					</div>
+
+
+
+						<div class="next_prev_box">
+							<div class="n_p_first">
+								<a href="#" class="previous">First</a>
+							</div>
+							<div class="n_p_sayfa1">
+								<a href="#" class="sayfa">1</a>
+							</div>
+							<div class="n_p_sayfa2">
+								<a href="#" class="sayfa">2</a>
+							</div>
+							<div class="n_p_sayfa3">
+								<a href="#" class="sayfa">3</a>
+							</div>
+							<div class="n_p_next">
+								<a href="#" class="next">Next</a>
+							</div>
+						</div>
+				</div>
+
+			<div class="flexibilityH_holder">
+				<div class="flexibilityH_img">
+					<div class="flex_bg1">
+						<p>Flexible Leases</p>
+					</div>
+					<div class="flex_bg2">	
+						<p>7-Day Happiness <br>Guaranteed</p>
+					</div>
+					<div class="flex_bg3">
+						<p>Monthly House <br>Cleaning</p>
+					</div>
+					<div class="flex_bg4">
+						<p>Choose Your <br> Own Roommate</p>
+					</div>
+				</div>
+				<div class="flex_h_text">
+						<h1>Flexibility and options<br> to suit your lifestyle.</h1>
+						<p>
+							You need it? We got it. We make finding your next <br>
+							home easy, comfortable, and simple. From our <br>
+							happiness guarantee to our selective roommate <br>
+							finder option. We provide you the flexibility that you<br>
+							most desire.
+						</p>
+						<button class="mybutton2">Search rooms</button>
+				</div>
+			</div>
+
+			<div class="addproperty_backs">
+					<div>
+						<h2>Your Property With Us And Be Confident That Your Room Will Be Filled Out</h2>
+					</div>
+					<div class="tablo">
+						<div class="orti">
+							<p>Add A New Property</p>
+						</div>
+						<div class="form-row">
+							<div class="form-group">
+								<p><span>Name*</span></p>
+								<input type="text" id="name" name="name" placeholder="Enter Name" required>
+							</div>
+				
+							<div class="form-group">
+								<p><span>Address*</span></p>
+								<input type="text" id="address" name="address" placeholder="Enter Address" required>
+							</div>
+							<div class="form-group">
+								<p><span>Unit Number*</span></p>
+								<input type="text" id="unitnumber" name="unitnumber" placeholder="Enter Unit" required>
+							</div>
+						</div>
+						<div class="form-row">
+							<div class="select-form">
+								<p><span> City*</span></p>
+								<select name="city" id="city" required>
+									<option value="sanjose">San Jose</option>
+									<option value="sanmateo">San Mateo</option>
+									<option value="santaclara">Santa Clara</option>
+									<option value="santarosa">Santa Rosa</option>
+								</select>
+							</div>
+							<div class="select-form">
+								<p><span> State*</span></p>
+								<select name="state" id="state" required>
+									<option value="california">California</option >
+									<option value="texas">Texas</option>
+									<option value="florida">Florida</option>
+									<option value="arizona">Arizona</option>
+								</select>
+							</div>
+							<div class="select-form">
+								<p><span> Room Type*</span></p>
+								<select name="roomtype" id="roomtype" required>
+									<option value="suit">Suit</option>
+									<option value="studioapartment">Studio Apartment</option>
+									<option value="homeoffice">Home Office</option>
+									<option value="familyhouse">Family House</option>
+								</select>
+							</div>
+						</div>
+						<div class="form-rowx">
+							<div class="form-group">
+								<p><span> Price* </span></p>
+								<input type="number" id="price" name="price" placeholder="Enter Price" required>
+							</div>
+						</div>
+						<div class="form-row">
+							<div class="form-group">
+								<p><span>Description:</span></p>
+								<textarea id="description" name="description" rows="6" cols="40" placeholder="Enter Description" required></textarea>
+							</div>
+						</div>
+						<div class="upload_part">
+							<p><span class="upload_text">Upload Photos</span></p>
+							<div class="kaydir">
+								<button type="button"><p>Drag your images here, or <span> browse</span></p> <br> </button>
+								<p class="spanr">Supported: JPG, JPEG, PNG</p>
+							</div>
+						</div>
+						<button type="submit">Add New Property</button>
+					</div>
+				
+			</div>
+
+				<div class="owner_content_background">
+					<div class="overlay-icon">
+						<img src="img/mark1.png" alt="">
+						<div class="quote-text">
+							<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam <br>
+								interdum nisl et nunc facilisis, a commodo eros mollis. Nunc vel <br>
+								pellentesque est. Curabitur at odio sit amet libero vulputate <br>
+								efficitur ac nec justo. Nulla vitae mauris quam. Nulla quam <br>
+								massa, faucibus id pretium ac, mattis eu velit. Donec sed risus <br>
+								a lacus fringilla finibus.</p>
+
+							<div class="author">
+								<img src="img/author_image.jpeg" alt="">
+								<span> <p>Harry Wilson</p><p>Property Owner</p></span>
+							</div>
+							<div class="elips">
+								<img src="img/orange_elips.png" alt="">
+								<img src="img/grey_elips.png" alt="">
+								<img src="img/grey_elips.png" alt="">
+							</div>
+						</div>
+					</div>
+					<div class="background_video">
+						<video id="backgroundVideo" src="img/mov_bbb.mp4" muted ></video>
+						<div class="play-button" id="playButton">
+							<img src="img/play_button.png" alt="Play Button">
+						</div>
+					</div>
+				</div>
+			
+		</div>
+		
+		<div class="footer">
+			<div class="footer_border">
+				<div class="footer_border_logo">
+					Logo				
+				</div>
+				<div class="footer_bilgirow">
+					<div class="footers">
+						<div class="footer_konumadres">
+							<i class="material-icons">location_on</i>  <p> 345 Faulconer Drive, Suite 4 • Charlottesville, CA, 12345</p>
+						</div>
+					</div>
+					<div class="footers">
+						<div class="footer_telfax">
+							<i class="material-icons">call </i> <p>(123) 456-7890</p>
+							<i class="material-icons">print</i> <p>(123) 456-7890</p>
+						</div>
+					</div>
+					<div class="footers">
+						
+						<div class="footer_socialmedia">
+							<p>Social Media</p>
+							<a href="#" class="fa fa-facebook"> </a>
+							<a href="#" class="fa fa-twitter"></a>
+							<a href="#" class="fa fa-linkedin"></a>
+							<a href="#" class="fa fa-youtube"></a>
+							<a href="#" class="fa fa-instagram"></a>
+							<a href="#" class="fa fa-google"></a>
+							<a href="#" class="fa fa-pinterest"></a>
+							<a href="#" class="fa fa-rss"></a>
+						</div>
+					</div>
+
+				</div>
+				<div class="last_border">
+			
+				</div>
+				<div class="footer_last">
+					<a href="#" class="last1">	ABOUT US </a>
+					<a href="#" class="last2"> CONTACT US </a>
+					<a href="#" class="last3"> 	HELP</a>
+					<a href="#" class="last4"> PRIVACY POLICY</a>
+					<a href="#" class="last5"> DISCLAIMER</a>
+					<p>Copyright © 2020 Minimumlivingcost. All rights reserved</p>
+
+				</div>
+
+			</div>
+		</div>
+
+	</div>
+	<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
+	  <!-- Swiper JS -->
+	  <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
+	  <!-- Initialize Swiper -->
+	  <script>
+  var swiper = new Swiper(".mySwiper", {
+    pagination: {
+      el: ".swiper-pagination",
+      clickable: true,
+      renderBullet: function (index, className) {
+        return '<span class="' + className + '">' + (index + 1) + "</span>";
+      },
+    },
+	navigation: {
+        nextEl: ".swiper-button-next",
+        prevEl: ".swiper-button-prev",
+      },
+  });
+
+  document.querySelector('.n_p_first .previous').addEventListener('click', function (e) {
+    e.preventDefault();
+    swiper.slideTo(0);
+  });
+
+  document.querySelector('.n_p_next .next').addEventListener('click', function (e) {
+    e.preventDefault();
+    swiper.slideNext();
+  });
+
+  document.querySelectorAll('.n_p_sayfa1 .sayfa, .n_p_sayfa2 .sayfa, .n_p_sayfa3 .sayfa').forEach(function (button, index) {
+    button.addEventListener('click', function (e) {
+      e.preventDefault();
+      swiper.slideTo(index);
+    });
+  });
+	  </script>
+	<script>
+		document.getElementById('playButton').addEventListener('click', function() {
+			var video = document.getElementById('backgroundVideo');
+			var playButton = document.getElementById('playButton');
+			if (video.paused) {
+				video.play();
+				playButton.style.display = 'none'; // Oynatma tuşunu gizler
+			}
+		});
+	</script>
+	 <script>
+		        function logCheck(){
+
+            var logcheck = localStorage.getItem('loggedIn');
+            console.log(logcheck);
+			if(logcheck != 'true'){
+				window.location.href = 'loginPage.html';
+			}
+		}
+		logCheck();
+    </script>
+	<script>	
+
+		function cikisYap(){
+			setTimeout(() => {
+				window.location.href = 'loginPage.html'; // Yönlendirilecek sayfanın ismi
+				localStorage.removeItem('loggedIn');
+			}, 2000);
+			
+		}
+			
+		
+	</script>
+</body>
+</html>

@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kayıt Sayfası</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .kullanici_kayit {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 300px;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+        label {
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+        input[type="text"],
+        input[type="password"],
+        input[type="date"] {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        button {
+            padding: 10px;
+            margin-top: 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button[type="button"] {
+            background-color: #007bff;
+            color: #fff;
+        }
+        button[type="button"]:hover {
+            background-color: #0056b3;
+        }
+        button:nth-of-type(2) {
+            background-color: #6c757d;
+        }
+        button:nth-of-type(2):hover {
+            background-color: #5a6268;
+        }
+        #kayitScreen {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        h2 {
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<script src="/socket.io/socket.io.js"></script>
+<body>
+    <div id="kayitScreen" class="kullanici_kayit">
+        <h2>Kayıt Ol</h2>
+        <form id="kayitFormu">
+            <label>
+                Kullanıcı adı: <input type="text" id="kayitKullaniciAdi" />
+            </label>
+            <label>
+                Şifre: <input type="password" id="kayitSifre" />
+            </label>
+            <label>
+                PIN: <input type="text" id="kayitPin" maxlength="4" oninput="validatePIN()" />
+            </label>
+            <label>
+                Adres: <input type="text" id="kayitAdres" />
+            </label>
+            <label>
+                Tarih: <input type="date" id="kayitTarih" />
+            </label>
+
+            <button onclick="kaydet()" type="button">Kaydol</button>
+            <button onclick="geriDon()" type="button">Geri Dön</button>
+        </form>
+    </div>
+
+    <script>
+        const socket = io();
+        function geriDon(){
+            window.location.href = 'loginPage.html';
+            localStorage.removeItem('registered');
+        }
+        function validatePIN() {
+            var pinInput = document.getElementById('kayitPin');
+            pinInput.value = pinInput.value.replace(/[^0-9]/g, '');
+        }
+        function kaydet() {
+            var kullaniciAdi = document.getElementById('kayitKullaniciAdi').value;
+            var sifre = document.getElementById('kayitSifre').value;
+            var pin = document.getElementById('kayitPin').value;
+            var adres = document.getElementById('kayitAdres').value;
+            var tarih = document.getElementById('kayitTarih').value;
+            const admin = false;
+            if (kullaniciAdi && sifre && pin && tarih) {
+                const user = { kullaniciAdi, sifre, pin, tarih, admin, adres };
+                // Socket.io üzerinden sunucuya kullanıcı bilgilerini gönder
+                socket.emit('createUser', user, (response) => {
+                    if (response.success) {
+                        alert('Kayıt başarılı! Yeni kullanıcı eklendi.');
+                        window.location.href = 'loginPage.html';
+                        localStorage.removeItem('registered');
+                    } else {
+                        alert('Kayıt sırasında hata oluştu: ' + response.message);
+                    }
+                });
+            } else {
+                alert('Lütfen tüm alanları doldurun.');
+            }
+        }
+    </script>
+</body>
+</html>

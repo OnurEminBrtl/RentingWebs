@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Paneli</title>
+    <style>
+        /* Mevcut stiller */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .adminKullanici_kayit {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            width: 300px;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        label {
+            font-size: 14px;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        input[type="text"],
+        input[type="password"],
+        input[type="date"] {
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 14px;
+            width: 94%;
+        }
+
+        .addButton {
+            padding: 10px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+
+
+
+
+
+        .goBackButton{
+            padding: 10px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div id="adminScreen" class="adminKullanici_kayit">
+        <form id="kayitFormuAdmin">
+            <label>
+                Kullanıcı adı: <input type="text" id="kayitKullaniciAdi" />
+            </label>
+            <label>
+                Şifre: <input type="password" id="kayitSifre" />
+            </label>
+            <label>
+                PIN: <input type="text" id="kayitPin" maxlength="4" oninput="validatePIN()" />
+            </label>
+            <label>
+                Adres: <input type="text" id="kayitAdres" />
+            </label>
+            <label>
+                Date: <input type="date" id="kayitTarih" />
+            </label>
+            <button class="addButton" onclick="kaydet()" type="button">Kullanıcı ekle</button>
+        </form>
+        <ul id="userList" class="user-list"></ul>
+        <button class="goBackButton" onclick="geriDon()" type="button">Geri Dön</button>
+        <button class="goUsersPage" onclick="users()" type="button">kullanıcılar</button>
+        <button class="goProductsPage" onclick="products()" type="button">ürünler</button>
+        <button class="goHosuePage" onclick="houses()" type="button">Evler</button>
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        const socket = io();
+        /* Kullanıcı ekleme işlemini burada yapıyoruz */
+        function kaydet() {
+            var kullaniciAdi = document.getElementById('kayitKullaniciAdi').value;
+            var sifre = document.getElementById('kayitSifre').value;
+            var pin = parseInt(document.getElementById('kayitPin').value);
+            var tarih = document.getElementById('kayitTarih').value;
+            var adres = document.getElementById('kayitAdres').value;
+            const admin = false;
+
+            if (kullaniciAdi && sifre && pin && tarih) {
+                socket.emit('createUser', { kullaniciAdi, sifre, pin, tarih, adres, admin });
+              //  displayUsers(); // Kullanıcı listesini güncelle
+                alert('Kullanıcı eklendi');
+            } else {
+                alert('Lütfen tüm alanları doldurun.');
+            }
+        }
+/*
+        // Kullanıcıları listeleyen fonksiyon
+        function displayUsers() {
+            socket.emit('getUsers');
+        }
+*/
+
+/*
+        // Kullanıcıları sunucudan al ve listele
+        socket.on('usersData', (users) => {
+            const userList = document.getElementById('userList');
+            userList.innerHTML = '';
+
+            users.forEach((user) => {
+                const userItem = document.createElement('li');
+                userItem.className = 'user-item';
+                userItem.innerHTML = `
+                    <span>${user.kullaniciadi} - ${user.tarih}</span>
+                    <button onclick="deleteUser(${user.user_id})">Sil</button>
+                `;
+                userList.appendChild(userItem);
+            });
+        });
+*/        
+/*
+        // Kullanıcı silme işlemi
+        function deleteUser(userId) {
+            socket.emit('deleteUser', userId);
+            displayUsers(); // Listeyi yeniden yükle
+            alert('Kullanıcı başarıyla silindi.');
+        }
+*/
+        function validatePIN() {
+            var pinInput = document.getElementById('kayitPin');
+            pinInput.value = pinInput.value.replace(/[^0-9]/g, '');
+        }
+        function geriDon() {
+            window.location.href = 'loginPage.html';
+        }
+        function houses() {
+            window.location.href = "http://localhost:3000/evler.html";
+        }
+        function products() {
+            window.location.href = "products.html";
+        }
+        function users() {
+            window.location.href = 'http://localhost:3000/users.html';
+        }
+
+        // Sayfa yüklendiğinde kullanıcıları göster
+        //window.onload = displayUsers;
+    </script>
+</body>
+</html>
